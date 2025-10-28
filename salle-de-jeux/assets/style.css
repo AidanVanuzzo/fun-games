@@ -1,0 +1,190 @@
+/* ===== STYLE GLOBAL ===== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #111;
+    color: #eee;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* ----- HEADER ----- */
+header {
+    background-color: #222;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #333;
+}
+
+.header-left {
+    display: flex;
+    align-items: center; /* aligne logo et texte sur la même ligne */
+    gap: 10px; /* espace entre logo et titre */
+}
+
+/* Taille du logo */
+.logo {
+    width: 50px;   /* change à 30px ou 50px selon ton goût */
+    height: auto;
+}
+
+/* Titre dans le header */
+header h1 {
+    color: #fff;
+    font-size: 22px;
+    margin: 0;
+}
+
+/* Liens de navigation */
+nav a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+nav a:hover {
+    color: #00c3ff;
+}
+
+
+/* Partie gauche du header : logo + titre */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* espace entre le logo et le texte */
+}
+
+/* Logo */
+.logo {
+    width: 30px;   /* taille du logo */
+    height: auto;
+}
+
+/* Titre du site */
+header h1 {
+    color: #fff;
+    font-size: 22px;
+    margin: 0;
+}
+
+/* Liens de navigation */
+nav a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+nav a:hover {
+    color: #00c3ff;
+}
+
+/* ===== BOUTONS ===== */
+.btn {
+    display: inline-block;
+    background-color: #0099ff;
+    color: white;
+    padding: 10px 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #ff8800;
+}
+
+/* ===== FORMULAIRES ===== */
+form {
+    text-align: left;
+    margin: 30px auto;
+    width: 80%;
+    max-width: 400px;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2a2a2a;
+    color: #fff;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background-color: #0099ff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+input[type="submit"]:hover {
+    background-color: #ff8800;
+}
+
+/* ===== MESSAGES ===== */
+.success {
+    color: #00ff88;
+    font-weight: bold;
+}
+
+.error {
+    color: #ff4444;
+    font-weight: bold;
+}
+
+/* ===== MAIN CONTENT ===== */
+main {
+    margin: 40px auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 700px;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background-color: #222;
+    color: #aaa;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 14px;
+    border-top: 2px solid #333;
+}
+
+/* ===== LIENS ===== */
+a {
+    color: #00c3ff;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #2180cd;
+}
