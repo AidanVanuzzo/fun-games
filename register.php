@@ -34,6 +34,7 @@ $stmt->execute();
 // Création de la table `users` si elle n'existe pas
 $sql = "CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     pass VARCHAR(255) NOT NULL
 );";
@@ -46,27 +47,33 @@ $stmt->execute();
 ?>
 
 <main>
-    <h2>Connexion</h2>
+    <h2>Créer un compte</h2>
     <form method="POST" action="">
-        <label for="email">Email :</label><br>
+        <label>Nom :</label><br>
+        <input type="text" name="nom" value="<?= htmlspecialchars($nom ?? '') ?>" required><br><br>
+
+        <label>Email :</label><br>
         <input type="email" name="email" value="<?= htmlspecialchars($email ?? '') ?>" required><br><br>
 
-        <label for="password">Mot de passe :</label><br>
+        <label>Mot de passe :</label><br>
         <input type="password" name="password" value="<?= htmlspecialchars($password ?? '') ?>" required><br><br>
 
-        <input type="submit" name="login" value="Se connecter" class="btn">
+        <input type="submit" name="register" value="S'inscrire" class="btn">
     </form>
 
     <?php
-    if (isset($_POST['login'])) {
+    if (isset($_POST['register'])) {
+        $nom = $_POST['nom'];
         $email = $_POST['email'];
         $password = $_POST['password'];
         try {
             // Définition de la requête SQL pour ajouter un utilisateur
             $sql = "INSERT INTO users (
+                username,
                 email,
                 pass
             ) VALUES (
+                :username,
                 :email,
                 :pass
             )";
@@ -77,6 +84,7 @@ $stmt->execute();
             // Lien avec les paramètres
             $stmt->bindValue(':email', $email);
             $stmt->bindValue(':pass', $password);
+            $stmt->bindvalue(':username', $nom);
 
             // Exécution de la requête SQL pour ajouter un utilisateur
             $stmt->execute();
@@ -95,15 +103,8 @@ $stmt->execute();
         } catch (Exception $e) {
             $errors[] = "Erreur inattendue : " . $e->getMessage();
         }
+        echo "<p class='success'>Bienvenue $nom ! Ton compte a été créé (simulation).</p>";
     }
-
-
-        // Version sans base de données (test)
-        if ($email === "matteo@test.com" && $password === "1234") {
-            echo "<p class='success'>Connexion réussie ! Bienvenue, Matteo 🎉</p>";
-        } else {
-            echo "<p class='error'>Identifiants incorrects.</p>";
-        }
     ?>
 </main>
 
