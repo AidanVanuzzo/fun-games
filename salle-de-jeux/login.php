@@ -48,11 +48,11 @@ $stmt->execute();
 <main>
     <h2>Connexion</h2>
     <form method="POST" action="">
-        <label>Email :</label><br>
-        <input type="email" name="email" required><br><br>
+        <label for="email">Email :</label><br>
+        <input type="email" name="email" value="<?= htmlspecialchars($email ?? '') ?>" required><br><br>
 
-        <label>Mot de passe :</label><br>
-        <input type="password" name="password" required><br><br>
+        <label for="password">Mot de passe :</label><br>
+        <input type="password" name="password" value="<?= htmlspecialchars($password ?? '') ?>" required><br><br>
 
         <input type="submit" name="login" value="Se connecter" class="btn">
     </form>
