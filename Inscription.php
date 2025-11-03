@@ -1,5 +1,5 @@
 <?php
-const DATABASE_CONFIGURATION_FILE = __DIR__ . '/database.ini';
+const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
 
 // Documentation : https://www.php.net/manual/fr/function.parse-ini-file.php
 $config = parse_ini_file(DATABASE_CONFIGURATION_FILE, true);
