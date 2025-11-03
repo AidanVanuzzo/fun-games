@@ -1,4 +1,48 @@
 <?php
+const DATABASE_CONFIGURATION_FILE = __DIR__ . '/database.ini';
+
+// Documentation : https://www.php.net/manual/fr/function.parse-ini-file.php
+$config = parse_ini_file(DATABASE_CONFIGURATION_FILE, true);
+
+if (!$config) {
+    throw new Exception("Erreur lors de la lecture du fichier de configuration : " . DATABASE_CONFIGURATION_FILE);
+}
+
+$host = $config['host'];
+$port = $config['port'];
+$database = $config['database'];
+$username = $config['username'];
+$password = $config['password'];
+
+// Documentation :
+//   - https://www.php.net/manual/fr/pdo.connections.php
+//   - https://www.php.net/manual/fr/ref.pdo-mysql.connection.php
+$pdo = new PDO("mysql:host=$host;port=$port;charset=utf8mb4", $username, $password);
+
+// Création de la base de données si elle n'existe pas
+$sql = "CREATE DATABASE IF NOT EXISTS `$database` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+
+// Sélection de la base de données
+$sql = "USE `$database`;";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+
+// Création de la table 'inscription' si elle n'existe pas
+
+$sql = "CREATE TABLE IF NOT EXISTS inscription (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    date_of VARCHAR(100) NOT NULL,
+    time_of VARCHAR(100) NOT NULL,
+    participant_number INT NOT NULL,
+    group_name VARCHAR(25)
+);";
+
+$stmt = $pdo->prepare($sql);
+
+$stmt->execute();
+
 //gère la soumission du formulaire
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Récupération des données du formulaire
@@ -29,6 +73,51 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (!empty($name) && strlen($name) < 2 || !empty($name) && strlen($name) > 25) {
         $errors[] = "Le nom doit groupe doit être entre 2 et 25 caractères";
+    }
+
+    //si pas d'erreurs, insertion dans la base de données
+    if (empty($errors)) {
+        try {
+        //Définition de la requête SQL pour ajouter un rendez-vous
+        $sql = "INSERT INTO inscription (
+            date_of,
+            time_of,
+            participant_number,
+            group_name
+        ) VALUES (
+            :date_of,
+            :time_of,
+            :participant_number,
+            :group_name
+        )";
+
+        //Préparation de la requête SQL
+        $stmt = $pdo->prepare($sql);
+
+        //Lien avec les paramètres
+        $stmt->bindValue(':date_of', $date);
+        $stmt->bindValue(':time_of', $time);
+        $stmt->bindValue(':participant_number', $number);
+        $stmt->bindValue(':group_name', $name);
+
+        // Exécution de la requête SQL pour ajouter un utilisateur
+        $stmt->execute();
+
+        // Redirection vers la page d'utilisateur avec tous les rendez-vous
+        //header("Location: ---");
+        //exit();
+    } catch (PDOException $e) {
+            // Liste des codes d'erreurs : https://en.wikipedia.org/wiki/SQLSTATE
+            if ($e->getCode() === "23000") {
+                // Erreur de contrainte d'unicité (par exemple, email déjà utilisé)
+                $errors[] = "L'adresse e-mail est déjà utilisée.";
+            } else {
+                $errors[] = "Erreur lors de l'interaction avec la base de données : " . $e->getMessage();
+            }
+        } catch (Exception $e) {
+            $errors[] = "Erreur inattendue : " . $e->getMessage();
+        }
+    
     }
 }
 ?>
@@ -64,7 +153,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <form action="Inscription.php" method="POST">
             <label for="date">Date du fun</label>
-            <input type="date" id="date" name="date" value="<?= $date ?? '' ?>" required min="2025-09-30">
+            <input type="date" id="date" name="date" value="<?= htmlspecialchars($date ?? '') ?>" required min="2025-09-30">
 
             <label for="time">Heure de début du fun</label>
             <select id="time" name="time" required>
@@ -81,10 +170,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </select>
 
             <label for="number">Nombre de participants au fun (min : 4, max : 8)</label>
-            <input type="number" id="number" name="number" value="<?= $number ?? '' ?>" required min="4" max="8" />
+            <input type="number" id="number" name="number" value="<?= htmlspecialchars($number ?? '') ?>" required min="4" max="8" />
 
             <label for="name">Nom du groupe</label>
-            <input type="text" id="name" name="name" value="<?= $name ?? '' ?>" minlength="2" maxlength="25" />
+            <input type="text" id="name" name="name" value="<?= htmlspecialchars($name ?? '') ?>" minlength="2" maxlength="25" />
 
             <button type="submit">Créer</button>
         </form>
