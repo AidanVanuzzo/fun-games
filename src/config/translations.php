@@ -9,7 +9,7 @@ $translations = [
         'login' => 'Se connecter',
         'register' => 'Créer un compte',
         'logout' => 'Se déconnecter',
-        'my_account' => 'Mon compte',
+        'account_title' => 'Mon compte',
         'bookings' => 'Mes réservations',
         'success_account' => 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.',
 

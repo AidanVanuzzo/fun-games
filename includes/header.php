@@ -36,7 +36,7 @@ if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $translations)) {
         <nav class="nav-links">
             <?php if (me()): ?>
                 <a href="reservations_list.php"><?= $translations[$language]['bookings'] ?></a>
-                <a href="account.php"><?= $translations[$language]['account'] ?></a>
+                <a href="account.php"><?= $translations[$language]['account_title'] ?></a>
                 <a href="logout.php"><?= $translations[$language]['logout'] ?></a>
             <?php else: ?>
                 <a href="login.php"><?= $translations[$language]['login'] ?></a>
