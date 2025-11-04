@@ -114,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <body>
     <main class="container">
-        <h1><?= $translations[$language]['form_create'] ?? 'Créer un nouveau rendez-vous' ?></h1>
+        <h1><?= $translations[$language]['form_create'] ?? "Créer un nouveau rendez-vous pour l'activité LASER GAME" ?></h1>
 
         <?php if ($_SERVER["REQUEST_METHOD"] === "POST") { ?>
             <?php if (empty($errors)) { ?>
