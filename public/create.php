@@ -53,6 +53,7 @@ $sql = "
 CREATE TABLE IF NOT EXISTS inscription (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
+    activity VARCHAR(100) NOT NULL,
     date_of VARCHAR(100) NOT NULL,
     time_of VARCHAR(100) NOT NULL,
     participant_number INT NOT NULL,
