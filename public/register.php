@@ -13,10 +13,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Validation basique
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Adresse e-mail invalide.";
+        $errors[] = $translations[$language]['register_invalid_email'] ?? "Adresse e-mail invalide.";
     }
     if (strlen($password) < 4) {
-        $errors[] = "Le mot de passe doit contenir au moins 4 caractères.";
+        $errors[] = $translations[$language]['register_short_password'] ?? "Le mot de passe doit contenir au moins 4 caractères.";
     }
 
     // Si aucune erreur
@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $check = $pdo->prepare("SELECT id FROM users WHERE email = ?");
             $check->execute([$email]);
             if ($check->fetch()) {
-                $errors[] = "Cet e-mail est déjà utilisé.";
+                $errors[] = $translations[$language]['register_email_used'] ?? "Cet e-mail est déjà utilisé.";
             } else {
                 // Hachage du mot de passe
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -37,23 +37,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     VALUES (:email, :pass, NOW())
                 ");
                 $stmt->bindValue(':email', $email);
-                $stmt->bindValue(':pass', password_hash($password, PASSWORD_DEFAULT));
+                $stmt->bindValue(':pass', $hashedPassword);
                 $stmt->execute();
 
                 $success = true;
             }
         } catch (PDOException $e) {
-            $errors[] = "Erreur: " . $e->getMessage();
+            $errors[] = ($translations[$language]['register_error'] ?? "Erreur : ") . $e->getMessage();
         }
     }
 }
 ?>
 
 <main>
-    <h2>Créer un compte</h2>
+    <h2><?= $translations[$language]['register_title'] ?? 'Créer un compte' ?></h2>
 
     <?php if ($success): ?>
-        <p class="success">✅ Compte créé avec succès ! Vous pouvez maintenant <a href="login.php">vous connecter</a>.</p>
+        <p class="success">
+            ✅ <?= $translations[$language]['register_success'] ?? 'Compte créé avec succès ! Vous pouvez maintenant' ?>
+            <a href="login.php"><?= $translations[$language]['register_login_link'] ?? 'vous connecter' ?></a>.
+        </p>
     <?php else: ?>
         <?php if (!empty($errors)): ?>
             <div class="error">
@@ -64,13 +67,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php endif; ?>
 
         <form method="POST" action="">
-            <label for="email">Email :</label>
+            <label for="email"><?= $translations[$language]['register_email'] ?? 'Email :' ?></label>
             <input type="email" name="email" required value="<?= htmlspecialchars($email ?? '') ?>">
 
-            <label for="password">Mot de passe :</label>
+            <label for="password"><?= $translations[$language]['register_password'] ?? 'Mot de passe :' ?></label>
             <input type="password" name="password" required>
 
-            <input type="submit" value="S'inscrire" class="btn">
+            <input type="submit" value="<?= $translations[$language]['register_button'] ?? 'S\'inscrire' ?>" class="btn">
         </form>
     <?php endif; ?>
 </main>

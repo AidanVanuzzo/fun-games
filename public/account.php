@@ -29,20 +29,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <main>
-  <h2>Mon compte</h2>
-  <?php if ($updated): ?><p class="success">Profil mis à jour ✅</p><?php endif; ?>
+  <h2><?= $translations[$language]['account_title'] ?? 'Mon compte' ?></h2>
+  <?php if ($updated): ?>
+    <p class="success"><?= $translations[$language]['account_updated'] ?? 'Profil mis à jour ✅' ?></p>
+  <?php endif; ?>
 
   <form method="POST">
-    <label>Nom</label>
+    <label><?= $translations[$language]['account_name'] ?? 'Nom' ?></label>
     <input type="text" name="nom" value="<?= htmlspecialchars($user['nom'] ?? '') ?>">
 
-    <label>Téléphone</label>
+    <label><?= $translations[$language]['account_phone'] ?? 'Téléphone' ?></label>
     <input type="text" name="telephone" value="<?= htmlspecialchars($user['telephone'] ?? '') ?>">
 
-    <label>Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+    <label><?= $translations[$language]['account_password'] ?? 'Nouveau mot de passe (laisser vide pour ne pas changer)' ?></label>
     <input type="password" name="password">
 
-    <button class="btn" type="submit">Enregistrer</button>
+    <button class="btn" type="submit"><?= $translations[$language]['account_save'] ?? 'Enregistrer' ?></button>
   </form>
 </main>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

@@ -11,40 +11,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Adresse e-mail invalide.";
+        $errors[] = $translations[$language]['login_invalid_email'] ?? "Adresse e-mail invalide.";
     }
 
     if (empty($errors)) {
         try {
-            // ⬇️ on lit bien la colonne `pass`
             $stmt = $pdo->prepare("SELECT id, pass FROM users WHERE email = ? LIMIT 1");
             $stmt->execute([$email]);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($row && !empty($row['pass']) && password_verify($password, $row['pass'])) {
                 $_SESSION['user_id'] = (int)$row['id'];
-                header('Location: account.php'); // ou reservations_list.php
+                header('Location: account.php');
                 exit;
             } else {
-                $errors[] = "Identifiants incorrects.";
+                $errors[] = $translations[$language]['login_wrong_credentials'] ?? "Identifiants incorrects.";
             }
         } catch (PDOException $e) {
-            $errors[] = "Erreur: " . $e->getMessage();
+            $errors[] = ($translations[$language]['login_error'] ?? "Erreur : ") . $e->getMessage();
         }
     }
 }
 ?>
 <main>
-  <h2>Connexion</h2>
+  <h2><?= $translations[$language]['login_title'] ?? 'Connexion' ?></h2>
   <?php if (!empty($errors)): ?>
-    <div class="error"><?php foreach ($errors as $err): ?><p>❌ <?= htmlspecialchars($err) ?></p><?php endforeach; ?></div>
+    <div class="error">
+      <?php foreach ($errors as $err): ?>
+        <p>❌ <?= htmlspecialchars($err) ?></p>
+      <?php endforeach; ?>
+    </div>
   <?php endif; ?>
   <form method="POST" action="">
-    <label>Email :</label>
+    <label><?= $translations[$language]['login_email'] ?? 'Email :' ?></label>
     <input type="email" name="email" required value="<?= htmlspecialchars($email ?? '') ?>">
-    <label>Mot de passe :</label>
+
+    <label><?= $translations[$language]['login_password'] ?? 'Mot de passe :' ?></label>
     <input type="password" name="password" required>
-    <input type="submit" value="Se connecter" class="btn">
+
+    <input type="submit" value="<?= $translations[$language]['login_button'] ?? 'Se connecter' ?>" class="btn">
   </form>
 </main>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

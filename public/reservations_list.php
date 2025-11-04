@@ -14,21 +14,29 @@ $stmt->execute([$_SESSION['user_id']]);
 $reservations = $stmt->fetchAll();
 ?>
 <main>
-  <h2>Mes réservations</h2>
+  <h2><?= $translations[$language]['reservations_title'] ?? 'Mes réservations' ?></h2>
 
   <?php if (empty($reservations)): ?>
-    <p>Aucune réservation pour le moment.</p>
+    <p><?= $translations[$language]['reservations_none'] ?? 'Aucune réservation pour le moment.' ?></p>
   <?php else: ?>
     <?php foreach ($reservations as $r): ?>
       <div style="border:1px solid #333;border-radius:10px;padding:12px;margin-bottom:12px">
-        <p><strong><?= htmlspecialchars($r['group_name'] ?: 'Sans nom') ?></strong></p>
-        <p><?= htmlspecialchars($r['date_of']) ?> à <?= htmlspecialchars($r['time_of']) ?> — 
-           <?= (int)$r['participant_number'] ?> joueurs</p>
+        <p><strong><?= htmlspecialchars($r['group_name'] ?: ($translations[$language]['reservations_no_name'] ?? 'Sans nom')) ?></strong></p>
+        <p>
+          <?= htmlspecialchars($r['date_of']) ?> <?= $translations[$language]['reservations_at'] ?? 'à' ?> 
+          <?= htmlspecialchars($r['time_of']) ?> — 
+          <?= (int)$r['participant_number'] ?> <?= $translations[$language]['reservations_players'] ?? 'joueurs' ?>
+        </p>
 
-        <a class="btn" href="reservations_show.php?id=<?= (int)$r['id'] ?>">Détails</a>
-        <a class="btn" href="reservations_edit.php?id=<?= (int)$r['id'] ?>">Modifier</a>
+        <a class="btn" href="reservations_show.php?id=<?= (int)$r['id'] ?>">
+          <?= $translations[$language]['reservations_details'] ?? 'Détails' ?>
+        </a>
+        <a class="btn" href="reservations_edit.php?id=<?= (int)$r['id'] ?>">
+          <?= $translations[$language]['reservations_edit'] ?? 'Modifier' ?>
+        </a>
       </div>
     <?php endforeach; ?>
   <?php endif; ?>
 </main>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+

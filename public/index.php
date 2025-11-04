@@ -3,13 +3,14 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <main>
-    <h2>Bienvenue à LSBOWL!</h2>
-    <p>Réservez vos parties de <strong>LASER GAME</strong> et de <strong>BOWLING</strong> facilement. 
-    <br> Pour ceci, veuillez créer un compte ou vous connecter.</p>
+    <h2><?= $translations[$language]['welcome_title'] ?? 'Bienvenue à LSBOWL!' ?></h2>
+    <p>
+        <?= $translations[$language]['welcome_message'] ?? 'Réservez vos parties de LASER GAME et de BOWLING facilement. Pour ceci, veuillez créer un compte ou vous connecter.' ?>
+    </p>
 
     <div class="buttons">
-        <a href="login.php" class="btn">Se connecter</a>
-        <a href="register.php" class="btn">Créer un compte</a>
+        <a href="login.php" class="btn"><?= $translations[$language]['login'] ?></a>
+        <a href="register.php" class="btn"><?= $translations[$language]['register'] ?></a>
     </div>
 </main>
 

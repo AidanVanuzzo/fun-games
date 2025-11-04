@@ -12,16 +12,16 @@ $r = $stmt->fetch();
 ?>
 <main>
   <?php if (!$r): ?>
-    <p class="error">Réservation introuvable.</p>
+    <p class="error"><?= $translations[$language]['reservation_not_found'] ?? 'Réservation introuvable.' ?></p>
   <?php else: ?>
-    <h2>Détail de la réservation</h2>
-    <p><strong>Groupe :</strong> <?= htmlspecialchars($r['group_name']) ?></p>
-    <p><strong>Date :</strong> <?= htmlspecialchars($r['date_of']) ?></p>
-    <p><strong>Heure :</strong> <?= htmlspecialchars($r['time_of']) ?></p>
-    <p><strong>Nombre de joueurs :</strong> <?= (int)$r['participant_number'] ?></p>
+    <h2><?= $translations[$language]['reservation_details_title'] ?? 'Détail de la réservation' ?></h2>
+    <p><strong><?= $translations[$language]['reservation_group'] ?? 'Groupe :' ?></strong> <?= htmlspecialchars($r['group_name']) ?></p>
+    <p><strong><?= $translations[$language]['reservation_date'] ?? 'Date :' ?></strong> <?= htmlspecialchars($r['date_of']) ?></p>
+    <p><strong><?= $translations[$language]['reservation_time'] ?? 'Heure :' ?></strong> <?= htmlspecialchars($r['time_of']) ?></p>
+    <p><strong><?= $translations[$language]['reservation_players'] ?? 'Nombre de joueurs :' ?></strong> <?= (int)$r['participant_number'] ?></p>
 
-    <a class="btn" href="reservations_edit.php?id=<?= (int)$r['id'] ?>">Modifier</a>
-    <a class="btn" href="reservations_list.php">Retour</a>
+    <a class="btn" href="reservations_edit.php?id=<?= (int)$r['id'] ?>"><?= $translations[$language]['reservation_edit'] ?? 'Modifier' ?></a>
+    <a class="btn" href="reservations_list.php"><?= $translations[$language]['reservation_back'] ?? 'Retour' ?></a>
   <?php endif; ?>
 </main>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
