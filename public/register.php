@@ -39,14 +39,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
                 $stmt = $pdo->prepare("
-                    INSERT INTO users (email, pass, nom, telephone, created_at)
-                    VALUES (:email, :pass, :nom, :telephone, NOW())
-                ");
+                    INSERT INTO users (email, pass, nom, telephone, role, created_at)
+                    VALUES (:email, :pass, :nom, :telephone, :role, NOW())
+                    ");
                 $stmt->execute([
                     ':email' => $email,
                     ':pass' => $hashedPassword,
                     ':nom' => $nom,
                     ':telephone' => ($telephone !== '' ? $telephone : null),
+                    ':role' => 'user',
                 ]);
 
                 $success = true;

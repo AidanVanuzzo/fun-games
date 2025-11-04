@@ -1,190 +1,248 @@
-/* ===== STYLE GLOBAL ===== */
+/* 🎯 RESET DE BASE */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Orbitron', sans-serif;
+}
+ 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #111;
-    color: #eee;
-    margin: 0;
-    padding: 0;
-    text-align: center;
+  background: radial-gradient(circle at top left, #0b0b0b, #000);
+  color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-
-/* ----- HEADER ----- */
-header {
-    background-color: #222;
-    padding: 15px 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 2px solid #333;
+ 
+/* 🧠 HEADER */
+.header {
+  background: linear-gradient(90deg, #111, #1a0033);
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #8e2de2;
+  box-shadow: 0 0 25px rgba(142, 45, 226, 0.4);
 }
-
-.header-left {
-    display: flex;
-    align-items: center; /* aligne logo et texte sur la même ligne */
-    gap: 10px; /* espace entre logo et titre */
+ 
+.header .logo {
+  height: 60px;
+  filter: drop-shadow(0 0 10px #8e2de2);
 }
-
-/* Taille du logo */
-.logo {
-    width: 50px;   /* change à 30px ou 50px selon ton goût */
-    height: auto;
+ 
+.header h1 {
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 0 20px #8e2de2, 0 0 40px #4a00e0;
 }
-
-/* Titre dans le header */
-header h1 {
-    color: #fff;
-    font-size: 22px;
-    margin: 0;
+ 
+/* 🔗 Navigation */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 25px;
 }
-
-/* Liens de navigation */
-nav a {
-    color: #fff;
-    margin: 0 10px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.2s ease;
+ 
+.nav-links a {
+  color: #f5f5f5;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
-
-nav a:hover {
-    color: #00c3ff;
+ 
+.nav-links a:hover {
+  color: #8e2de2;
+  text-shadow: 0 0 15px #8e2de2;
 }
-
-
-/* Partie gauche du header : logo + titre */
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* espace entre le logo et le texte */
+ 
+/* 🌍 Langue : drapeaux */
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 15px;
 }
-
-/* Logo */
-.logo {
-    width: 30px;   /* taille du logo */
-    height: auto;
+ 
+.lang-switch a {
+  font-size: 1.3rem;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+  line-height: 1;
 }
-
-/* Titre du site */
-header h1 {
-    color: #fff;
-    font-size: 22px;
-    margin: 0;
+ 
+.lang-switch a:hover {
+  transform: scale(1.2);
 }
-
-/* Liens de navigation */
-nav a {
-    color: #fff;
-    margin: 0 10px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.2s ease;
+ 
+.lang-switch img {
+  width: 24px;
+  height: auto;
+  border-radius: 3px;
+  box-shadow: 0 0 6px rgba(142, 45, 226, 0.6);
+  transition: transform 0.2s;
 }
-
-nav a:hover {
-    color: #00c3ff;
+ 
+.lang-switch img:hover {
+  transform: scale(1.15);
 }
-
-/* ===== BOUTONS ===== */
-.btn {
-    display: inline-block;
-    background-color: #0099ff;
-    color: white;
-    padding: 10px 15px;
-    margin-top: 10px;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.2s ease;
-}
-
-.btn:hover {
-    background-color: #ff8800;
-}
-
-/* ===== FORMULAIRES ===== */
-form {
-    text-align: left;
-    margin: 30px auto;
-    width: 80%;
-    max-width: 400px;
-    background-color: #1a1a1a;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: #2a2a2a;
-    color: #fff;
-}
-
-input[type="submit"] {
-    width: 100%;
-    background-color: #0099ff;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-input[type="submit"]:hover {
-    background-color: #ff8800;
-}
-
-/* ===== MESSAGES ===== */
-.success {
-    color: #00ff88;
-    font-weight: bold;
-}
-
-.error {
-    color: #ff4444;
-    font-weight: bold;
-}
-
-/* ===== MAIN CONTENT ===== */
+ 
+/* 🧩 MAIN */
 main {
-    margin: 40px auto;
-    padding: 20px;
-    width: 80%;
-    max-width: 700px;
-    background-color: #1a1a1a;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  padding: 80px 20px;
+  animation: fadeIn 1.5s ease-in;
 }
-
-/* ===== FOOTER ===== */
+ 
+main h2 {
+  font-size: 2.5rem;
+  margin-bottom: 25px;
+  color: #fff;
+  text-shadow: 0 0 15px #8e2de2;
+}
+ 
+main p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #dcdcdc;
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+ 
+strong {
+  color: #8e2de2;
+  text-shadow: 0 0 10px #8e2de2;
+}
+ 
+/* 🕹️ BOUTONS */
+.btn, button, input[type="submit"] {
+  background: linear-gradient(90deg, #8e2de2, #4a00e0);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin: 10px;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px #8e2de2;
+}
+ 
+.btn:hover, button:hover, input[type="submit"]:hover {
+  background: linear-gradient(90deg, #4a00e0, #8e2de2);
+  box-shadow: 0 0 25px #8e2de2;
+  transform: scale(1.05);
+}
+ 
+/* 🎯 FORMULAIRES */
+form {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  margin: 0 auto;
+  box-shadow: 0 0 25px rgba(142, 45, 226, 0.4);
+  backdrop-filter: blur(8px);
+}
+ 
+label {
+  display: block;
+  text-align: left;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: #ccc;
+}
+ 
+input, select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+ 
+input:focus, select:focus {
+  outline: 2px solid #8e2de2;
+  box-shadow: 0 0 10px #8e2de2;
+}
+ 
+/* ✅ MESSAGES */
+.success {
+  color: #4cff79;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #4cff79;
+}
+ 
+.error {
+  color: #ff4d6d;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #ff4d6d;
+}
+ 
+/* 🔥 CARTES DE RÉSERVATION */
+main div {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 15px auto;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 0 20px rgba(142, 45, 226, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+ 
+main div:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 35px rgba(142, 45, 226, 0.6);
+}
+ 
+/* ⚡ ANIMATION */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+ 
+/* 🎳 FOOTER */
 footer {
-    background-color: #222;
-    color: #aaa;
-    padding: 10px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    font-size: 14px;
-    border-top: 2px solid #333;
+  background: linear-gradient(90deg, #1a0033, #111);
+  text-align: center;
+  padding: 15px;
+  color: #aaa;
+  border-top: 1px solid #8e2de2;
+  box-shadow: 0 0 20px rgba(142, 45, 226, 0.3);
 }
-
-/* ===== LIENS ===== */
-a {
-    color: #00c3ff;
-    transition: color 0.2s ease;
+ 
+footer a {
+  color: #8e2de2;
+  text-decoration: none;
 }
-
-a:hover {
-    color: #2180cd;
+ 
+footer a:hover {
+  text-shadow: 0 0 10px #8e2de2;
+}
+ 
+/* 📱 RESPONSIVE */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+ 
+  .nav-links {
+    margin-top: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+ 
+  .lang-switch {
+    margin-top: 10px;
+  }
 }

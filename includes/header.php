@@ -37,6 +37,11 @@ if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $translations)) {
             <?php if (me()): ?>
                 <a href="reservations_list.php"><?= $translations[$language]['bookings'] ?></a>
                 <a href="account.php"><?= $translations[$language]['account_title'] ?></a>
+
+            <?php if (($_SESSION['role'] ?? 'user') === 'admin'): ?>
+                <a href="admin.php">Admin</a>
+            <?php endif; ?>
+
                 <a href="logout.php"><?= $translations[$language]['logout'] ?></a>
             <?php else: ?>
                 <a href="login.php"><?= $translations[$language]['login'] ?></a>

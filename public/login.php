@@ -16,15 +16,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errors)) {
         try {
-            $stmt = $pdo->prepare("SELECT id, pass FROM users WHERE email = ? LIMIT 1");
+            $stmt = $pdo->prepare("SELECT id, pass, role FROM users WHERE email = ? LIMIT 1");
             $stmt->execute([$email]);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($row && !empty($row['pass']) && password_verify($password, $row['pass'])) {
+                session_regenerate_id(true);           // bonne pratique
                 $_SESSION['user_id'] = (int)$row['id'];
+                $_SESSION['role']    = $row['role'];   // <<--- essentiel pour l’autorisation
                 header('Location: account.php');
                 exit;
-            } else {
+
+           } else {
                 $errors[] = $translations[$language]['login_wrong_credentials'] ?? "Identifiants incorrects.";
             }
         } catch (PDOException $e) {

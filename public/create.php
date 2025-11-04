@@ -40,6 +40,12 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ";
+
+$sql = "
+ALTER TABLE users
+  ADD COLUMN role ENUM('user','admin') NOT NULL DEFAULT 'user' AFTER telephone;
+";
+
 $pdo->exec($sql);
 
 // ---------- TABLE INSCRIPTION ----------
