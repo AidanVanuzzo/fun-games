@@ -2,7 +2,13 @@
 
 session_start();
 
-$user_id = $_SESSION['user_id'] ?? null;
+$userId = $_SESSION['user_id'] ?? null;
+
+if (!$userId) {
+    // Redirige vers la page de connexion si l'utilisateur n'est pas authentifié
+    header('Location: login.php');
+    exit();
+}
 
 require_once __DIR__ . '/../includes/header.php';
 
@@ -82,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $sql = "INSERT INTO inscription (user_id, activity, date_of, time_of, participant_number, group_name)
                     VALUES (:user_id, 'LG', :date_of, :time_of, :participant_number, :group_name)";
             $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':user_id', $user_id);
+            $stmt->bindValue(':user_id', $userId);
             $stmt->bindValue(':date_of', $date);
             $stmt->bindValue(':time_of', $time);
             $stmt->bindValue(':participant_number', $number);
