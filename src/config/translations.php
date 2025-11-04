@@ -41,6 +41,11 @@ $translations = [
         'register_email' => "Email :",
         'register_password' => "Mot de passe :",
         'register_button' => "S'inscrire",
+        'register_name' => "Nom complet :",
+        'register_phone' => "Téléphone (facultatif) :",
+        'register_invalid_name' => "Le nom doit faire entre 2 et 100 caractères.",
+        'register_invalid_phone' => "Le numéro de téléphone n'est pas valide.",
+
 
         // ----- reservations_edit.php -----
         'reservation_not_found' => "Réservation introuvable.",
@@ -108,6 +113,11 @@ $translations = [
         'register_email' => "Email:",
         'register_password' => "Password:",
         'register_button' => "Sign up",
+        'register_name' => "Full name:",
+        'register_phone' => "Phone (optional):",
+        'register_invalid_name' => "Name must be between 2 and 100 characters.",
+        'register_invalid_phone' => "The phone number is not valid.",
+
 
         // ----- reservations_edit.php -----
         'reservation_not_found' => "Reservation not found.",
