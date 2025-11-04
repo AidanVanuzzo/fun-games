@@ -1,4 +1,9 @@
 <?php
+
+session_start();
+
+$user_id = $_SESSION['user_id'] ?? null;
+
 require_once __DIR__ . '/../includes/header.php';
 
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
@@ -32,6 +37,8 @@ $stmt->execute();
 // Création de la table 'inscription'
 $sql = "CREATE TABLE IF NOT EXISTS inscription (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    activity VARCHAR(100) NOT NULL,
     date_of VARCHAR(100) NOT NULL,
     time_of VARCHAR(100) NOT NULL,
     participant_number INT NOT NULL,
@@ -72,20 +79,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($errors)) {
         try {
-            $sql = "INSERT INTO inscription (date_of, time_of, participant_number, group_name)
-                    VALUES (:date_of, :time_of, :participant_number, :group_name)";
+            $sql = "INSERT INTO inscription (user_id, activity, date_of, time_of, participant_number, group_name)
+                    VALUES (:user_id, 'Bowling', :date_of, :time_of, :participant_number, :group_name)";
             $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':user_id', $user_id);
             $stmt->bindValue(':date_of', $date);
             $stmt->bindValue(':time_of', $time);
             $stmt->bindValue(':participant_number', $number);
             $stmt->bindValue(':group_name', $name);
             $stmt->execute();
         } catch (PDOException $e) {
-            if ($e->getCode() === "23000") {
-                $errors[] = $translations[$language]['error_email'] ?? "L'adresse e-mail est déjà utilisée.";
-            } else {
-                $errors[] = ($translations[$language]['error_db'] ?? "Erreur lors de l'interaction avec la base de données : ") . $e->getMessage();
-            }
+            // if ($e->getCode() === "23000") {
+            //     $errors[] = $translations[$language]['error_email'] ?? "L'adresse e-mail est déjà utilisée.";
+            // } else {
+            //     $errors[] = ($translations[$language]['error_db'] ?? "Erreur lors de l'interaction avec la base de données : ") . $e->getMessage();
+            // }
         } catch (Exception $e) {
             $errors[] = ($translations[$language]['error_unexpected'] ?? "Erreur inattendue : ") . $e->getMessage();
         }
@@ -95,12 +103,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <title><?= $translations[$language]['form_title'] ?? "S'inscrire pour l'activité" ?></title>
+    <title><?= $translations[$language]['form_title'] ?? "S'inscrire pour l'activité BOWLING" ?></title>
 </head>
 
 <body>
@@ -148,4 +157,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </form>
     </main>
 </body>
+
 </html>
