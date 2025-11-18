@@ -11,6 +11,7 @@ if (!$userId) {
 }
 
 require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../includes/mailer.php';
 
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
 
@@ -94,6 +95,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bindValue(':participant_number', $number);
             $stmt->bindValue(':group_name', $name);
             $stmt->execute();
+
+                    // Envoi du mail de confirmation BOWLING
+        $userStmt = $pdo->prepare("SELECT email, nom FROM users WHERE id = ?");
+        $userStmt->execute([$userId]);
+        $user = $userStmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && !empty($user['email'])) {
+            $toEmail = $user['email'];
+            $toName  = $user['nom'] ?? '';
+
+            $subject = "Confirmation de réservation BOWLING";
+
+            $htmlBody = "
+                <p>Bonjour " . htmlspecialchars($toName) . ",</p>
+                <p>Votre réservation <strong>BOWLING</strong> a bien été enregistrée :</p>
+                <ul>
+                    <li>Date : " . htmlspecialchars($date) . "</li>
+                    <li>Heure : " . htmlspecialchars($time) . "</li>
+                    <li>Nombre de participants : " . htmlspecialchars($number) . "</li>
+                    <li>Nom du groupe : " . htmlspecialchars($name) . "</li>
+                </ul>
+                <p>Merci d'avoir réservé chez LSBOWL 🎳</p>
+            ";
+
+            $textBody = "Bonjour {$toName},\n\n"
+                . "Votre réservation BOWLING a bien été enregistrée :\n"
+                . "- Date : {$date}\n"
+                . "- Heure : {$time}\n"
+                . "- Participants : {$number}\n"
+                . "- Groupe : {$name}\n\n"
+                . "Merci d'avoir réservé chez LSBOWL.";
+
+            send_email($toEmail, $toName, $subject, $htmlBody, $textBody);
+        }
+
+
         } catch (PDOException $e) {
             // if ($e->getCode() === "23000") {
             //     $errors[] = $translations[$language]['error_email'] ?? "L'adresse e-mail est déjà utilisée.";
