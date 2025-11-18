@@ -70,6 +70,23 @@ $translations = [
         // ----- reservations_show.php -----
         'reservation_details_title' => "Détail de la réservation",
         'reservation_back' => "Retour",
+
+        // ----- Inscription_LSBowl -----
+        'error_date'=> "La date doit être présente",
+        'error_time' => "L'heure de début doit être présente",
+        'error_number' => "Le nombre de participants doit être entre 4 et 8",
+        'error_group' => "Le nom du groupe doit être entre 2 et 25 caractères",
+        'error_unexpected' => "Erreur inattendue : ",
+        'form_title_bowling' => "S'inscrire pour l'activité BOWLING",
+        'form_title_lg' => "S'inscrire pour l'activité LASER GAME",
+        'form_create' => "Créer un nouveau rendez-vous",
+        'form_success' => 'Le formulaire a été soumis avec succès !',
+        'form_error' => 'Le formulaire contient des erreurs :',
+        'form_label_date' => 'Date du fun',
+        'form_label_time' => 'Heure de début du fun',
+        'form_label_number' => 'Nombre de participants au fun (min : 4, max : 8)',
+        'form_label_group' => 'Nom du groupe',
+        'form_submit' => 'Créer'
     ],
 
     'en' => [
@@ -142,5 +159,22 @@ $translations = [
         // ----- reservations_show.php -----
         'reservation_details_title' => "Booking details",
         'reservation_back' => "Back",
+
+        // ----- Inscription_LSBowl -----
+        'error_date'=> "There must be a date",
+        'error_time' => "There must be a starting time",
+        'error_number' => "Participants number must be between 4 and 8",
+        'error_group' => "Group name must be between 2 and 25 characters",
+        'error_unexpected' => "Unexpected error : ",
+        'form_title_bowling' => "Register for the BOWLING",
+        'form_title_lg' => "Register for the LASER GAME",
+        'form_create' => "Create new rendez-vous",
+        'form_success' => 'form have been succesfully submitted',
+        'form_error' => 'form contains errors :',
+        'form_label_date' => 'Date of fun',
+        'form_label_time' => 'Starting time of fun',
+        'form_label_number' => 'Participants number for the fun (min : 4, max : 8)',
+        'form_label_group' => 'Group name',
+        'form_submit' => 'Create'
     ],
 ];

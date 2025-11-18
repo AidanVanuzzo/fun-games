@@ -152,12 +152,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <title><?= $translations[$language]['form_title'] ?? "S'inscrire pour l'activité LASER GAME" ?></title>
+    <title><?= $translations[$language]['form_title_lg'] ?? "S'inscrire pour l'activité LASER GAME" ?></title>
 </head>
 
 <body>
     <main class="container">
-        <h1><?= $translations[$language]['form_create'] ?? "Créer un nouveau rendez-vous pour l'activité LASER GAME" ?></h1>
+        <h1><?= $translations[$language]['form_create'] ?? "Créer un nouveau rendez-vous" ?></h1>
 
         <?php if ($_SERVER["REQUEST_METHOD"] === "POST") { ?>
             <?php if (empty($errors)) { ?>
