@@ -11,7 +11,7 @@ if (!$userId) {
 }
 
 require_once __DIR__ . '/../includes/header.php';
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../includes/mailer.php';
 
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
 
