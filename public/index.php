@@ -11,6 +11,7 @@ require_once __DIR__ . '/../includes/header.php';
     <div class="buttons">
         <a href="login.php" class="btn"><?= $translations[$language]['login'] ?></a>
         <a href="register.php" class="btn"><?= $translations[$language]['register'] ?></a>
+        <a href="Inscription.php" class="btn"><?= $translations[$language]['inscription'] ?></a>
     </div>
 </main>
 
