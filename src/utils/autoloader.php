@@ -1,15 +1,24 @@
 <?php
-// Charge les classes automatiquement
-spl_autoload_register(function ($class) {
-    // Convertit les séparateurs de namespace en séparateurs de répertoires
-    $relativePath = str_replace('\\', '/', $class);
+// src/utils/autoloader.php
 
-    // Construit le chemin complet du fichier
-    $file = __DIR__ . '/../classes/' . $relativePath . '.php';
+spl_autoload_register(function (string $class) {
+    // On ne gère que les classes du namespace PHPMailer\PHPMailer
+    $prefix = 'PHPMailer\\PHPMailer\\';
+    $baseDir = __DIR__ . '/../classes/PHPMailer/PHPMailer/';
 
-    // Vérifie si le fichier existe avant de l'inclure
+    $len = strlen($prefix);
+    if (strncmp($prefix, $class, $len) !== 0) {
+        // Si la classe ne commence pas par ce préfixe, on ignore
+        return;
+    }
+
+    // Nom de la classe sans le namespace
+    $relativeClass = substr($class, $len);
+
+    // Remplace les "\" par "/" et ajoute ".php"
+    $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
+
     if (file_exists($file)) {
-        // Inclut le fichier de classe
-        require_once $file;
+        require $file;
     }
 });
