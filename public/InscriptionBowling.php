@@ -10,6 +10,44 @@ if (!$userId) {
     exit();
 }
 
+$sql = "SELECT email, nom FROM users WHERE id = :user_id";
+
+// On prépare la requête SQL
+$stmt = $this->database->getPdo()->prepare($sql);
+
+// On lie le paramètre
+$stmt->bindValue(':user_id', $userId);
+
+// On exécute la requête SQL
+$stmt->execute();
+
+// On récupère le résultat comme tableau associatif
+$email = $stmt->fetch();
+
+require_once __DIR__ . '/../src/utils/autoloader.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+const MAIL_CONFIGURATION_FILE = __DIR__ . '/../src/config/mail.ini';
+
+$config = parse_ini_file(MAIL_CONFIGURATION_FILE, true);
+
+if (!$config) {
+    throw new Exception("Erreur lors de la lecture du fichier de configuration : " .
+        MAIL_CONFIGURATION_FILE);
+}
+
+$host = $config['host'];
+$port = filter_var($config['port'], FILTER_VALIDATE_INT);
+$authentication = filter_var($config['authentication'], FILTER_VALIDATE_BOOLEAN);
+$username = $config['username'];
+$password = $config['password'];
+$from_email = $config['from_email'];
+$from_name = $config['from_name'];
+
+$mail = new PHPMailer(true);
+
 require_once __DIR__ . '/../includes/header.php';
 
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
@@ -94,6 +132,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bindValue(':participant_number', $number);
             $stmt->bindValue(':group_name', $name);
             $stmt->execute();
+
+            $mail->isSMTP();
+            $mail->Host = $host;
+            $mail->Port = $port;
+            $mail->SMTPAuth = $authentication;
+            $mail->Username = $username;
+            $mail->Password = $password;
+            $mail->CharSet = "UTF-8";
+            $mail->Encoding = "base64";
+
+            // Expéditeur et destinataire
+            $mail->setFrom($from_email, $from_name);
+            $mail->addAddress($email['email'], $email['nom']);
+
+            // Contenu du mail
+            $mail->isHTML(true);
+            $mail->Subject = 'Inscription Bowling';
+            $mail->Body    = "<b>Vous vous êtes bel et bien inscrits à l'activité bowling</b>";
+            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+            $mail->send();
         } catch (PDOException $e) {
             // if ($e->getCode() === "23000") {
             //     $errors[] = $translations[$language]['error_email'] ?? "L'adresse e-mail est déjà utilisée.";
