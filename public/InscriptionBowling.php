@@ -225,7 +225,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <?php } ?>
         <?php } ?>
 
-        <form action="Inscription.php" method="POST">
+        <form action="InscriptionBowling.php" method="POST">
             <label for="date"><?= $translations[$language]['form_label_date'] ?? 'Date du fun' ?></label>
             <input type="date" id="date" name="date" value="<?= htmlspecialchars($date ?? '') ?>" required min="2025-09-30">
 
