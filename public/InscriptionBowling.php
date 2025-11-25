@@ -10,8 +10,6 @@ if (!$userId) {
     exit();
 }
 
-
-
 require_once __DIR__ . '/../src/utils/autoloader.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -37,7 +35,7 @@ $from_name = $config['from_name'];
 $mail = new PHPMailer(true);
 
 require_once __DIR__ . '/../includes/header.php';
-require_once __DIR__ . '/../includes/mailer.php';
+//require_once __DIR__ . '/../includes/mailer.php';
 
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
 
@@ -138,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 // On récupère le résultat comme tableau associatif
                 $email = $stmt->fetch();
-                
+
                 $toEmail = $email['email'];
                 $toName  = $email['nom'] ?? '';
 
