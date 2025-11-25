@@ -184,6 +184,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $mail->send();
             }
+            // Redirige vers la page d'activitées lorsque l'utilisateur soumet le formulaire
+            header('Location: Inscription.php');
+            exit();
         } catch (PDOException $e) {
             // if ($e->getCode() === "23000") {
             //     $errors[] = $translations[$language]['error_email'] ?? "L'adresse e-mail est déjà utilisée.";
