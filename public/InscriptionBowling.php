@@ -10,19 +10,7 @@ if (!$userId) {
     exit();
 }
 
-$sql = "SELECT email, nom FROM users WHERE id = :user_id";
 
-// On prépare la requête SQL
-$stmt = $this->database->getPdo()->prepare($sql);
-
-// On lie le paramètre
-$stmt->bindValue(':user_id', $userId);
-
-// On exécute la requête SQL
-$stmt->execute();
-
-// On récupère le résultat comme tableau associatif
-$email = $stmt->fetch();
 
 require_once __DIR__ . '/../src/utils/autoloader.php';
 
@@ -137,6 +125,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Envoi du mail de confirmation BOWLING
 
             if ($user && !empty($email['email'])) {
+                $sql = "SELECT email, nom FROM users WHERE id = :user_id";
+
+                // On prépare la requête SQL
+                $stmt = $pdo->prepare($sql);
+
+                // On lie le paramètre
+                $stmt->bindValue(':user_id', $userId);
+
+                // On exécute la requête SQL
+                $stmt->execute();
+
+                // On récupère le résultat comme tableau associatif
+                $email = $stmt->fetch();
+                
                 $toEmail = $email['email'];
                 $toName  = $email['nom'] ?? '';
 
