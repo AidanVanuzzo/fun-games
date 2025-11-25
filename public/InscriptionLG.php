@@ -34,6 +34,31 @@ $from_name = $config['from_name'];
 
 $mail = new PHPMailer(true);
 
+
+$mail->isSMTP();
+$mail->Host = $host;
+$mail->Port = $port;
+$mail->SMTPAuth = $authentication;
+if ($authentication) {
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Username = $username;
+    $mail->Password = $password;
+}
+$mail->CharSet = "UTF-8";
+$mail->Encoding = "base64";
+
+// Expéditeur et destinataire
+$mail->setFrom($from_email, $from_name);
+$mail->addAddress("ludovic.delafontaine@gmail.com", "Ludovic Delafontaine");
+
+// Contenu du mail
+$mail->isHTML(true);
+$mail->Subject = "Test";
+$mail->Body = "Test";
+$mail->AltBody = "Test";
+
+$mail->send();
+
 require_once __DIR__ . '/../includes/header.php';
 //require_once __DIR__ . '/../includes/mailer.php';
 
@@ -141,6 +166,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $toEmail = $email['email'];
                 $toName  = $email['nom'] ?? '';
 
+                print($toEmail);
+                print($toName);
+
                 $subject = "Confirmation de réservation LASER GAME";
 
                 $htmlBody = "
@@ -168,8 +196,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $mail->Host = $host;
                 $mail->Port = $port;
                 $mail->SMTPAuth = $authentication;
-                $mail->Username = $username;
-                $mail->Password = $password;
+                if ($authentication) {
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                    $mail->Username = $username;
+                    $mail->Password = $password;
+                }
                 $mail->CharSet = "UTF-8";
                 $mail->Encoding = "base64";
 

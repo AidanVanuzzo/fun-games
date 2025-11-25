@@ -107,9 +107,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!empty($name) && strlen($name) < 2 || !empty($name) && strlen($name) > 25) {
         $errors[] = $translations[$language]['error_group'] ?? "Le nom du groupe doit être entre 2 et 25 caractères";
     }
-
+echo "<p>bonjour<p>";
     if (empty($errors)) {
+        echo "<p>aucune erreur<p>";
         try {
+            echo "<p>try<p>";
             $sql = "INSERT INTO inscription (user_id, activity, date_of, time_of, participant_number, group_name)
                     VALUES (:user_id, 'Bowling', :date_of, :time_of, :participant_number, :group_name)";
             $stmt = $pdo->prepare($sql);
@@ -119,10 +121,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bindValue(':participant_number', $number);
             $stmt->bindValue(':group_name', $name);
             $stmt->execute();
+            echo "<p>database<p>";
 
             // Envoi du mail de confirmation BOWLING
 
-            if ($user && !empty($email['email'])) {
+            //if ($user && !empty($email['email'])) {
                 $sql = "SELECT email, nom FROM users WHERE id = :user_id";
 
                 // On prépare la requête SQL
@@ -167,8 +170,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $mail->Host = $host;
                 $mail->Port = $port;
                 $mail->SMTPAuth = $authentication;
-                $mail->Username = $username;
-                $mail->Password = $password;
+                if ($authentication) {
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                    $mail->Username = $username;
+                    $mail->Password = $password;
+                }
                 $mail->CharSet = "UTF-8";
                 $mail->Encoding = "base64";
 
@@ -183,11 +189,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $mail->AltBody = $textBody;
 
                 $mail->send();
-            }
+                echo "<p>mail envoyé<p>";
+            //}
             // Redirige vers la page d'activitées lorsque l'utilisateur soumet le formulaire
             header('Location: Inscription.php');
             exit();
         } catch (PDOException $e) {
+            print_r($e);
             // if ($e->getCode() === "23000") {
             //     $errors[] = $translations[$language]['error_email'] ?? "L'adresse e-mail est déjà utilisée.";
             // } else {
