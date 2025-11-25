@@ -11,6 +11,7 @@ $translations = [
         'logout' => 'Se déconnecter',
         'account_title' => 'Mon compte',
         'bookings' => 'Mes réservations',
+        'inscription' => 'Activitées',
         'success_account' => 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.',
 
         // ----- account.php -----
@@ -86,7 +87,10 @@ $translations = [
         'form_label_time' => 'Heure de début du fun',
         'form_label_number' => 'Nombre de participants au fun (min : 4, max : 8)',
         'form_label_group' => 'Nom du groupe',
-        'form_submit' => 'Créer'
+        'form_submit' => 'Créer',
+        'inscription_title' => "choix de l'activité",
+        'BOWLING' => 'BOWLING',
+        'LASER GAME' => 'LASER GAME'
     ],
 
     'en' => [
@@ -100,6 +104,7 @@ $translations = [
         'logout' => 'Log out',
         'my_account' => 'My account',
         'bookings' => 'My bookings',
+        'inscription' => 'Activities',
         'success_account' => 'Account successfully created! You can now log in.',
 
         // ----- account.php -----
@@ -175,6 +180,9 @@ $translations = [
         'form_label_time' => 'Starting time of fun',
         'form_label_number' => 'Participants number for the fun (min : 4, max : 8)',
         'form_label_group' => 'Group name',
-        'form_submit' => 'Create'
+        'form_submit' => 'Create',
+        'inscription_title' => "Activity choice",
+        'BOWLING' => 'BOWLING',
+        'LASER GAME' => 'LASER GAME'
     ],
 ];
