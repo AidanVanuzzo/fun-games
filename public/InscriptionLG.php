@@ -134,18 +134,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bindValue(':group_name', $name);
             $stmt->execute();
 
-                    // Envoi du mail de confirmation LASER GAME
-        $userStmt = $pdo->prepare("SELECT email, nom FROM users WHERE id = ?");
-        $userStmt->execute([$userId]);
-        $user = $userStmt->fetch(PDO::FETCH_ASSOC);
+            // Envoi du mail de confirmation LASER GAME
 
-        if ($user && !empty($user['email'])) {
-            $toEmail = $user['email'];
-            $toName  = $user['nom'] ?? '';
+            if ($user && !empty($user['email'])) {
+                $toEmail = $email['email'];
+                $toName  = $email['nom'] ?? '';
 
-            $subject = "Confirmation de réservation LASER GAME";
+                $subject = "Confirmation de réservation LASER GAME";
 
-            $htmlBody = "
+                $htmlBody = "
                 <p>Bonjour " . htmlspecialchars($toName) . ",</p>
                 <p>Votre réservation <strong>LASER GAME</strong> a bien été enregistrée :</p>
                 <ul>
@@ -157,18 +154,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <p>Merci d'avoir réservé chez LSBOWL 🔫</p>
             ";
 
-            $textBody = "Bonjour {$toName},\n\n"
-                . "Votre réservation LASER GAME a bien été enregistrée :\n"
-                . "- Date : {$date}\n"
-                . "- Heure : {$time}\n"
-                . "- Participants : {$number}\n"
-                . "- Groupe : {$name}\n\n"
-                . "Merci d'avoir réservé chez LSBOWL.";
+                $textBody = "Bonjour {$toName},\n\n"
+                    . "Votre réservation LASER GAME a bien été enregistrée :\n"
+                    . "- Date : {$date}\n"
+                    . "- Heure : {$time}\n"
+                    . "- Participants : {$number}\n"
+                    . "- Groupe : {$name}\n\n"
+                    . "Merci d'avoir réservé chez LSBOWL.";
+                    
+                //send_email($toEmail, $toName, $subject, $htmlBody, $textBody);
+                $mail->isSMTP();
+                $mail->Host = $host;
+                $mail->Port = $port;
+                $mail->SMTPAuth = $authentication;
+                $mail->Username = $username;
+                $mail->Password = $password;
+                $mail->CharSet = "UTF-8";
+                $mail->Encoding = "base64";
 
-            send_email($toEmail, $toName, $subject, $htmlBody, $textBody);
-        }
-    
+                // Expéditeur et destinataire
+                $mail->setFrom($from_email, $from_name);
+                $mail->addAddress($toEmail, $toName);
 
+                // Contenu du mail
+                $mail->isHTML(true);
+                $mail->Subject = $subject;
+                $mail->Body = $htmlBody;
+                $mail->AltBody = $textBody;
+
+                $mail->send();
+            }
         } catch (PDOException $e) {
             // if ($e->getCode() === "23000") {
             //     $errors[] = $translations[$language]['error_email'] ?? "L'adresse e-mail est déjà utilisée.";
