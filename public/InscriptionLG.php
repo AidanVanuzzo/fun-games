@@ -34,6 +34,7 @@ $from_name = $config['from_name'];
 
 $mail = new PHPMailer(true);
 
+// try {
 
 $mail->isSMTP();
 $mail->Host = $host;
@@ -47,17 +48,28 @@ if ($authentication) {
 $mail->CharSet = "UTF-8";
 $mail->Encoding = "base64";
 
-// Expéditeur et destinataire
-$mail->setFrom($from_email, $from_name);
-$mail->addAddress("ludovic.delafontaine@gmail.com", "Ludovic Delafontaine");
+// // Expéditeur et destinataire
+// $mail->setFrom($from_email, $from_name);
+// $mail->addAddress("aidan.vanuzzo2904@gmail.com", "Aidan Vanuzzo");
 
-// Contenu du mail
-$mail->isHTML(true);
-$mail->Subject = "Test";
-$mail->Body = "Test";
-$mail->AltBody = "Test";
+// echo "aidan.vanuzzo@gmail.com";
 
-$mail->send();
+// // Contenu du mail
+// $mail->isHTML(true);
+// $mail->Subject = "Test";
+// $mail->Body = "Test";
+// $mail->AltBody = "Test";
+
+// $mail->send();
+
+// echo "message envoyé";
+// }
+
+
+// catch (Exception $e) {
+//             $errors[] = ($translations[$language]['error_unexpected'] ?? "Erreur inattendue : ") . $e->getMessage();
+//             print $e;
+//         }
 
 require_once __DIR__ . '/../includes/header.php';
 //require_once __DIR__ . '/../includes/mailer.php';
@@ -147,31 +159,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             // Envoi du mail de confirmation LASER GAME
 
-            if ($user && !empty($user['email'])) {
+            $sql = "SELECT email, nom FROM users WHERE id = :user_id";
 
-                $sql = "SELECT email, nom FROM users WHERE id = :user_id";
+            // On prépare la requête SQL
+            $stmt = $pdo->prepare($sql);
 
-                // On prépare la requête SQL
-                $stmt = $pdo->prepare($sql);
+            // On lie le paramètre
+            $stmt->bindValue(':user_id', $userId);
 
-                // On lie le paramètre
-                $stmt->bindValue(':user_id', $userId);
+            // On exécute la requête SQL
+            $stmt->execute();
 
-                // On exécute la requête SQL
-                $stmt->execute();
+            // On récupère le résultat comme tableau associatif
+            $email = $stmt->fetch();
 
-                // On récupère le résultat comme tableau associatif
-                $email = $stmt->fetch();
+            $toEmail = $email['email'];
+            $toName  = $email['nom'] ?? '';
 
-                $toEmail = $email['email'];
-                $toName  = $email['nom'] ?? '';
+            print($toEmail);
+            print($toName);
 
-                print($toEmail);
-                print($toName);
+            $subject = "Confirmation de réservation LASER GAME";
 
-                $subject = "Confirmation de réservation LASER GAME";
-
-                $htmlBody = "
+            $htmlBody = "
                 <p>Bonjour " . htmlspecialchars($toName) . ",</p>
                 <p>Votre réservation <strong>LASER GAME</strong> a bien été enregistrée :</p>
                 <ul>
@@ -183,39 +193,41 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <p>Merci d'avoir réservé chez LSBOWL 🔫</p>
             ";
 
-                $textBody = "Bonjour {$toName},\n\n"
-                    . "Votre réservation LASER GAME a bien été enregistrée :\n"
-                    . "- Date : {$date}\n"
-                    . "- Heure : {$time}\n"
-                    . "- Participants : {$number}\n"
-                    . "- Groupe : {$name}\n\n"
-                    . "Merci d'avoir réservé chez LSBOWL.";
+            $textBody = "Bonjour {$toName},\n\n"
+                . "Votre réservation LASER GAME a bien été enregistrée :\n"
+                . "- Date : {$date}\n"
+                . "- Heure : {$time}\n"
+                . "- Participants : {$number}\n"
+                . "- Groupe : {$name}\n\n"
+                . "Merci d'avoir réservé chez LSBOWL.";
 
-                //send_email($toEmail, $toName, $subject, $htmlBody, $textBody);
-                $mail->isSMTP();
-                $mail->Host = $host;
-                $mail->Port = $port;
-                $mail->SMTPAuth = $authentication;
-                if ($authentication) {
-                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-                    $mail->Username = $username;
-                    $mail->Password = $password;
-                }
-                $mail->CharSet = "UTF-8";
-                $mail->Encoding = "base64";
+            //send_email($toEmail, $toName, $subject, $htmlBody, $textBody);
+            // $mail = new PHPMailer(true);
 
-                // Expéditeur et destinataire
-                $mail->setFrom($from_email, $from_name);
-                $mail->addAddress($toEmail, $toName);
+            // $mail->isSMTP();
+            // $mail->Host = $host;
+            // $mail->Port = $port;
+            // $mail->SMTPAuth = $authentication;
+            // if ($authentication) {
+            //     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            //     $mail->Username = $username;
+            //     $mail->Password = $password;
+            // }
+            // $mail->CharSet = "UTF-8";
+            // $mail->Encoding = "base64";
 
-                // Contenu du mail
-                $mail->isHTML(true);
-                $mail->Subject = $subject;
-                $mail->Body = $htmlBody;
-                $mail->AltBody = $textBody;
+            // Expéditeur et destinataire
+            $mail->setFrom($from_email, $from_name);
+            $mail->addAddress($toEmail, $toName);
 
-                $mail->send();
-            }
+            // Contenu du mail
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body = $htmlBody;
+            $mail->AltBody = $textBody;
+
+            $mail->send();
+
             // Redirige vers la page d'activitées lorsque l'utilisateur soumet le formulaire
             header('Location: Inscription.php');
             exit();
@@ -227,6 +239,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // }
         } catch (Exception $e) {
             $errors[] = ($translations[$language]['error_unexpected'] ?? "Erreur inattendue : ") . $e->getMessage();
+            print $e;
         }
     }
 }
