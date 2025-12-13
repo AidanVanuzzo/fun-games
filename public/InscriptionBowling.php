@@ -34,6 +34,18 @@ $from_name = $config['from_name'];
 
 $mail = new PHPMailer(true);
 
+$mail->isSMTP();
+$mail->Host = $host;
+$mail->Port = $port;
+$mail->SMTPAuth = $authentication;
+if ($authentication) {
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Username = $username;
+    $mail->Password = $password;
+}
+$mail->CharSet = "UTF-8";
+$mail->Encoding = "base64";
+
 require_once __DIR__ . '/../includes/header.php';
 //require_once __DIR__ . '/../includes/mailer.php';
 
@@ -107,11 +119,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!empty($name) && strlen($name) < 2 || !empty($name) && strlen($name) > 25) {
         $errors[] = $translations[$language]['error_group'] ?? "Le nom du groupe doit être entre 2 et 25 caractères";
     }
-echo "<p>bonjour<p>";
+
     if (empty($errors)) {
-        echo "<p>aucune erreur<p>";
         try {
-            echo "<p>try<p>";
             $sql = "INSERT INTO inscription (user_id, activity, date_of, time_of, participant_number, group_name)
                     VALUES (:user_id, 'Bowling', :date_of, :time_of, :participant_number, :group_name)";
             $stmt = $pdo->prepare($sql);
@@ -121,7 +131,6 @@ echo "<p>bonjour<p>";
             $stmt->bindValue(':participant_number', $number);
             $stmt->bindValue(':group_name', $name);
             $stmt->execute();
-            echo "<p>database<p>";
 
             // Envoi du mail de confirmation BOWLING
 
@@ -166,17 +175,17 @@ echo "<p>bonjour<p>";
                     . "Merci d'avoir réservé chez LSBOWL.";
 
                 //send_email($toEmail, $toName, $subject, $htmlBody, $textBody);
-                $mail->isSMTP();
-                $mail->Host = $host;
-                $mail->Port = $port;
-                $mail->SMTPAuth = $authentication;
-                if ($authentication) {
-                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-                    $mail->Username = $username;
-                    $mail->Password = $password;
-                }
-                $mail->CharSet = "UTF-8";
-                $mail->Encoding = "base64";
+                // $mail->isSMTP();
+                // $mail->Host = $host;
+                // $mail->Port = $port;
+                // $mail->SMTPAuth = $authentication;
+                // if ($authentication) {
+                //     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                //     $mail->Username = $username;
+                //     $mail->Password = $password;
+                // }
+                // $mail->CharSet = "UTF-8";
+                // $mail->Encoding = "base64";
 
                 // Expéditeur et destinataire
                 $mail->setFrom($from_email, $from_name);
@@ -189,13 +198,12 @@ echo "<p>bonjour<p>";
                 $mail->AltBody = $textBody;
 
                 $mail->send();
-                echo "<p>mail envoyé<p>";
             //}
+
             // Redirige vers la page d'activitées lorsque l'utilisateur soumet le formulaire
             header('Location: Inscription.php');
             exit();
         } catch (PDOException $e) {
-            print_r($e);
             // if ($e->getCode() === "23000") {
             //     $errors[] = $translations[$language]['error_email'] ?? "L'adresse e-mail est déjà utilisée.";
             // } else {
