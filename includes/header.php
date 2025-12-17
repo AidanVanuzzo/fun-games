@@ -29,8 +29,8 @@ if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $translations)) {
 <body>
     <header class="header">
         <div class="header-left">
-            <img src="../assets/LOGO.png" alt="Logo Salle de Jeux" class="logo">
-            <h1><?= $translations[$language]['title'] ?></h1>
+            <a href="index.php"><img src="../assets/LOGO.png" alt="Logo Salle de Jeux" class="logo"></a>
+            <a href="index.php"><h1><?= $translations[$language]['title'] ?></h1></a>
         </div>
 
         <nav class="nav-links">
