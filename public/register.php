@@ -118,6 +118,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $mail->send();
             }
+
+            // Redirige vers la page de connexion lorsque l'utilisateur s'inscrit
+            //header('Location: login.php');
+            //exit();
         } catch (PDOException $e) {
             $errors[] = ($translations[$language]['register_error'] ?? "Erreur : ") . $e->getMessage();
         }

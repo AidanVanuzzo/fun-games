@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 session_regenerate_id(true);           // bonne pratique
                 $_SESSION['user_id'] = (int)$row['id'];
                 $_SESSION['role']    = $row['role'];   // <<--- essentiel pour l’autorisation
-                header('Location: account.php');
+                header('Location: index.php');
                 exit;
 
            } else {
