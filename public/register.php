@@ -1,4 +1,41 @@
 <?php
+
+require_once __DIR__ . '/../src/utils/autoloader.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+const MAIL_CONFIGURATION_FILE = __DIR__ . '/../src/config/mail.ini';
+
+$config = parse_ini_file(MAIL_CONFIGURATION_FILE, true);
+
+if (!$config) {
+    throw new Exception("Erreur lors de la lecture du fichier de configuration : " .
+        MAIL_CONFIGURATION_FILE);
+}
+
+$host = $config['host'];
+$port = filter_var($config['port'], FILTER_VALIDATE_INT);
+$authentication = filter_var($config['authentication'], FILTER_VALIDATE_BOOLEAN);
+$username = $config['username'];
+$password = $config['password'];
+$from_email = $config['from_email'];
+$from_name = $config['from_name'];
+
+$mail = new PHPMailer(true);
+
+$mail->isSMTP();
+$mail->Host = $host;
+$mail->Port = $port;
+$mail->SMTPAuth = $authentication;
+if ($authentication) {
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Username = $username;
+    $mail->Password = $password;
+}
+$mail->CharSet = "UTF-8";
+$mail->Encoding = "base64";
+
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/db.php';
 
@@ -51,6 +88,35 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ]);
 
                 $success = true;
+
+                $toEmail = $email;
+                $toName = $nom;
+
+                $subject = "Confirmation d'inscription à LSBOWL";
+
+                $htmlBody = "
+                <p>Bonjour " . htmlspecialchars($toName) . ",</p>
+                <p>Votre inscription au site <strong>LSBOWL</strong> a bien été enregistrée !</p>
+                <p>Vous pouvez désormais réserver une activitée !<p>
+                <p>Préférez-vous le <strong>BOWLING<strong> 🎳 ou le <strong>LASER GAME<strong> 🔫 ?</p>
+                ";
+
+                $textBody = "Bonjour {$toName},\n\n"
+                    . "Votre inscription au site LSBOWL a bien été enregistrée !\n"
+                    . "Vous pouvez désormais réserver une activitée !\n"
+                    . "Préférez-vous le BOWLING 🎳 ou le LASER GAME 🔫 ?";
+
+                // Expéditeur et destinataire
+                $mail->setFrom($from_email, $from_name);
+                $mail->addAddress($toEmail, $toName);
+
+                // Contenu du mail
+                $mail->isHTML(true);
+                $mail->Subject = $subject;
+                $mail->Body = $htmlBody;
+                $mail->AltBody = $textBody;
+
+                $mail->send();
             }
         } catch (PDOException $e) {
             $errors[] = ($translations[$language]['register_error'] ?? "Erreur : ") . $e->getMessage();
@@ -77,24 +143,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
         <?php endif; ?>
 
-       <form method="POST" action="">
-    <label for="nom">Nom complet :</label>
-    <input type="text" name="nom" id="nom" required minlength="2" maxlength="100"
-           value="<?= htmlspecialchars($nom ?? '') ?>">
+        <form method="POST" action="">
+            <label for="nom">Nom complet :</label>
+            <input type="text" name="nom" id="nom" required minlength="2" maxlength="100"
+                value="<?= htmlspecialchars($nom ?? '') ?>">
 
-    <label for="telephone">Téléphone (facultatif) :</label>
-    <input type="text" name="telephone" id="telephone" maxlength="30"
-           placeholder="+41 79 123 45 67"
-           value="<?= htmlspecialchars($telephone ?? '') ?>">
+            <label for="telephone">Téléphone (facultatif) :</label>
+            <input type="text" name="telephone" id="telephone" maxlength="30"
+                placeholder="+41 79 123 45 67"
+                value="<?= htmlspecialchars($telephone ?? '') ?>">
 
-    <label for="email">Email :</label>
-    <input type="email" name="email" id="email" required value="<?= htmlspecialchars($email ?? '') ?>">
+            <label for="email">Email :</label>
+            <input type="email" name="email" id="email" required value="<?= htmlspecialchars($email ?? '') ?>">
 
-    <label for="password">Mot de passe :</label>
-    <input type="password" name="password" id="password" required minlength="4">
+            <label for="password">Mot de passe :</label>
+            <input type="password" name="password" id="password" required minlength="4">
 
-    <input type="submit" value="S'inscrire" class="btn">
-</form>
+            <input type="submit" value="S'inscrire" class="btn">
+        </form>
 
     <?php endif; ?>
 </main>

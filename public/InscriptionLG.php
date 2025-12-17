@@ -176,8 +176,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $toEmail = $email['email'];
             $toName  = $email['nom'] ?? '';
 
-            print($toEmail);
-            print($toName);
+            //print($toEmail);
+            //print($toName);
 
             $subject = "Confirmation de réservation LASER GAME";
 
