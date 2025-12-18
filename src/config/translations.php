@@ -11,7 +11,7 @@ $translations = [
         'logout' => 'Se déconnecter',
         'account_title' => 'Mon compte',
         'bookings' => 'Mes réservations',
-        'inscription' => 'Activitées',
+        'inscription' => 'Activités',
         'success_account' => 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.',
 
         // ----- account.php -----
