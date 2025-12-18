@@ -1,4 +1,9 @@
 <?php
+
+session_start();
+
+$userId = $_SESSION['user_id'] ?? null;
+
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
@@ -9,8 +14,10 @@ require_once __DIR__ . '/../includes/header.php';
     </p>
 
     <div class="buttons">
+        <?php if (!$userId) { ?>
         <a href="login.php" class="btn"><?= $translations[$language]['login'] ?></a>
         <a href="register.php" class="btn"><?= $translations[$language]['register'] ?></a>
+        <?php } ?>
         <a href="Inscription.php" class="btn"><?= $translations[$language]['inscription'] ?></a>
     </div>
 </main>
