@@ -97,8 +97,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $htmlBody = "
                 <p>Bonjour " . htmlspecialchars($toName) . ",</p>
                 <p>Votre inscription au site <strong>LSBOWL</strong> a bien été enregistrée !</p>
-                <p>Vous pouvez désormais réserver une activitée !<p>
-                <p>Préférez-vous le <strong>BOWLING<strong> 🎳 ou le <strong>LASER GAME<strong> 🔫 ?</p>
+                <p>Vous pouvez désormais réserver une activitée !</p>
+                <p>Préférez-vous le <strong>BOWLING</strong> 🎳 ou le <strong>LASER GAME</strong> 🔫 ?</p>
                 ";
 
                 $textBody = "Bonjour {$toName},\n\n"
